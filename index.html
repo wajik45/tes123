@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OK</title>
+  </head>
+  <body>
+    <input type="file" />
+    <button>submit</button>
+  </body>
+
+  <script>
+    let udin = [];
+
+    const input = document.querySelector("input");
+    const button = document.querySelector("button");
+
+    input.addEventListener("change", function () {
+      udin.push(this.files[0]);
+    });
+
+    button.addEventListener("click", function () {
+      if (udin.length > 0) {
+        udin.forEach((item) => {
+          const formData = new FormData();
+
+          formData.append("udin", item);
+
+          (async () => {
+            const response = await fetch("http://localhost:3001/upload/image", {
+              method: "POST",
+              body: formData,
+            });
+
+            const result = await response.json();
+
+            console.log(result);
+          })();
+        });
+      } else {
+        return;
+      }
+    });
+  </script>
+</html>
